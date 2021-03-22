@@ -63,7 +63,9 @@ Element LinkedList::Remove(int index) {
   // Tip 1: рассмотрите случай, когда удаляется элемент в начале списка
   if (index == 0) {
       Element removed_element = head_->data;
-      head_ = head_->next;
+      auto temp = head_->next;
+      delete head_;
+      head_ = temp;
       size_--;
       return removed_element;
   }
@@ -71,7 +73,10 @@ Element LinkedList::Remove(int index) {
   else{
       Node * current_node = find_node(index-1);
       Element removed_element = (current_node->next)->data;
-      current_node->next = (current_node->next)->next;
+      auto temp = (current_node->next)->next;
+      delete current_node->next;
+      current_node->next = temp;
+      // если удаляем последний элемент, не забываем изменить значение поля tail_
       if (index == size_ - 1) tail_ = current_node;
       size_--;
       return removed_element;
@@ -81,6 +86,14 @@ Element LinkedList::Remove(int index) {
 
 void LinkedList::Clear() {
   // Tip 1: люди в черном (MIB) пришли стереть вам память
+  Node * current_node = head_;
+  for (int index = 0; index < size_; index++) {
+      auto temp = current_node->next;
+      delete current_node;
+      current_node = temp;
+  }
+  delete current_node;
+
   // напишите свой код здесь ...
   head_ = nullptr;
   tail_ = nullptr;
@@ -111,15 +124,16 @@ int LinkedList::IndexOf(Element e) const {
 Node *LinkedList::find_node(int index) const {
   assert(index >= 0 && index < size_);
   // Tip 1: можете сразу обработать случаи поиска начала и конца списка
-  if (index == 0) return head_;
-  if (index == size_ - 1) return tail_;
+  if (index == 0) { return head_; }
+  if (index == size_ - 1) { return tail_; }
   // напишите свой код здесь ...
-  Node * current_node = head_;
-
-  for (int i = 0; i < index; i++) {
-    current_node = current_node->next;
-  }
-  return current_node;
+    {
+      Node *current_node = head_;
+      for (int i = 0; i < index; i++) {
+        current_node = current_node->next;
+      }
+      return current_node;
+    }
 }
 
 // РЕАЛИЗОВАНО
