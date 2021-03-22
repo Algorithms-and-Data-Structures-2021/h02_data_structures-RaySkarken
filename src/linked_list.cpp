@@ -10,7 +10,7 @@ namespace itis {
 void LinkedList::Add(Element e) {
   // Tip 1: создайте узел в куче со переданным значением
   // Tip 2: есть 2 случая - список пустой и непустой
-  if(IsEmpty()) {
+  if(size_ == 0) {
       Node * new_node = new Node(e, nullptr);
       head_ = new_node;
       tail_ = new_node;
