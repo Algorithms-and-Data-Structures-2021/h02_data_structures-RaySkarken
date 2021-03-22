@@ -14,12 +14,13 @@ void LinkedList::Add(Element e) {
       Node * new_node = new Node(e, nullptr);
       head_ = new_node;
       tail_ = new_node;
+      size_++;
   } else {
       Node * new_node = new Node(e, nullptr);
       tail_->next = new_node;
       tail_ = new_node;
+      size_++;
   }
-  size_++;
   // Tip 3: не забудьте обновить поля head и tail
   // напишите свой код здесь ...
 }
