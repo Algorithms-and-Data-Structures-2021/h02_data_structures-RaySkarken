@@ -72,7 +72,7 @@ Element ArrayList::Remove(int index) {
 
   // Tip 1: можете использовать std::copy для сдвига элементов влево
   Element deleted_element = data_[index];
-  std::copy(data_ + index + 1, data_ + size_, data_ + index);
+  std::copy(data_ + index + 1, data_ + capacity_, data_ + index);
   // Tip 2: не забудьте задать значение Element::UNINITIALIZED освободившейся ячейке
   data_[size_--] = Element::UNINITIALIZED;
   // напишите свой код здесь ...
@@ -82,6 +82,7 @@ Element ArrayList::Remove(int index) {
 void ArrayList::Clear() {
   // Tip 1: можете использовать std::fill для заполнения ячеек массива значением  Element::UNINITIALIZED
   std::fill(data_, data_ + size_, Element::UNINITIALIZED);
+  size_ = 0;
   // напишите свой код здесь ...
 }
 
@@ -130,16 +131,16 @@ void ArrayList::resize(int new_capacity) {
   assert(new_capacity > capacity_);  // не ошибается тот, кто ничего не делает ...
 
   // 1. выделяем новый участок памяти
-  auto new_data = new Element[capacity_];
+  auto new_data = new Element[new_capacity];
 
   // 2. копируем данные на новый участок
-  std::copy(data_, data_ + size_ - 1, new_data);
+  std::copy(data_, data_ + size_, new_data);
 
   // 3. заполняем "свободные" ячейки памяти значением Element::UNINITIALIZED
   std::fill(new_data + size_, new_data + new_capacity, Element::UNINITIALIZED);
 
   // 4. высвобождаем старый участок памяти меньшего размера
-  delete data_;
+  delete[] data_;
 
   // 5. пересылаем указатель на новый участок памяти
   data_ = new_data;
