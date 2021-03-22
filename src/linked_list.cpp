@@ -9,12 +9,13 @@ namespace itis {
 
 void LinkedList::Add(Element e) {
   // Tip 1: создайте узел в куче со переданным значением
-  Node * new_node = new Node(e, nullptr);
   // Tip 2: есть 2 случая - список пустой и непустой
   if(IsEmpty()) {
+      Node * new_node = new Node(e, nullptr);
       head_ = new_node;
       tail_ = new_node;
   } else {
+      Node * new_node = new Node(e, nullptr);
       tail_->next = new_node;
       tail_ = new_node;
   }
@@ -58,23 +59,23 @@ void LinkedList::Set(int index, Element e) {
 
 Element LinkedList::Remove(int index) {
   internal::check_out_of_range(index, 0, size_);
-
-  Element removed_element{};
   // Tip 1: рассмотрите случай, когда удаляется элемент в начале списка
   if (index == 0) {
-      removed_element = head_->data;
+      Element removed_element = head_->data;
       head_ = head_->next;
+      size_--;
+      return removed_element;
   }
   // Tip 2: используйте функцию find_node(index)
   else{
       Node * current_node = find_node(index-1);
-      removed_element = (current_node->next)->data;
+      Element removed_element = (current_node->next)->data;
       current_node->next = (current_node->next)->next;
       if (index == size_ - 1) tail_ = current_node;
+      size_--;
+      return removed_element;
   }
   // напишите свой код здесь ...
-  size_--;
-  return removed_element;
 }
 
 void LinkedList::Clear() {
